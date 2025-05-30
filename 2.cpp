@@ -8,15 +8,29 @@ using namespace std;
 // Функция для безопасного ввода чисел
 double getValidInput(const string& prompt) {
     double value;
-    while (true) {
-        cout << prompt;
-        if (cin >> value && value > 0) {
-            return value;
-        }
-        cout << "Ошибка: введите положительное число!\n";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << prompt;
+    if (cin >> value && value > 0) {
+        return value;
     }
+    else {
+        cout << "Ошибка: введено некорректное значение. Завершение программы.\n";
+        exit(1);
+    }
+}
+
+// Функция для вычисления третьей стороны по теореме косинусов
+double calculateThirdSide(double a, double b, double angleRad) {
+    return sqrt(pow(a, 2) + pow(b, 2) - 2 * a * b * cos(angleRad));
+}
+
+// Функция для вычисления площади треугольника
+double calculateArea(double a, double b, double angleRad) {
+    return 0.5 * a * b * sin(angleRad);
+}
+
+// Функция для вычисления радиуса описанной окружности
+double calculateCircumradius(double a, double b, double c, double area) {
+    return (a * b * c) / (4 * area);
 }
 
 int main() {
@@ -31,14 +45,14 @@ int main() {
     // Преобразование угла в радианы
     double angleRad = angle * M_PI / 180.0;
 
-    // Вычисление третьей стороны по теореме косинусов: c² = a² + b² - 2ab*cos(γ)
-    double c = sqrt(pow(a, 2) + pow(b, 2) - 2 * a * b * cos(angleRad));
+    // Вычисление третьей стороны
+    double c = calculateThirdSide(a, b, angleRad);
 
-    // Вычисление площади по формуле: S = (1/2)*a*b*sin(γ)
-    double area = 0.5 * a * b * sin(angleRad);
+    // Вычисление площади
+    double area = calculateArea(a, b, angleRad);
 
-    // Вычисление радиуса описанной окружности по формуле: R = (a*b*c)/(4*S)
-    double radius = (a * b * c) / (4 * area);
+    // Вычисление радиуса описанной окружности
+    double radius = calculateCircumradius(a, b, c, area);
 
     // Вывод результатов
     cout << fixed << setprecision(4);

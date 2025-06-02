@@ -5,9 +5,8 @@
 
 using namespace std;
 
-// Прототипы функций
 /**
- * @brief Получает корректное числовое значение от пользователя
+ * @brief Получает корректное положительное числовое значение от пользователя
  * @param prompt Приглашение для ввода
  * @return Введенное положительное число
  * @note Завершает программу при некорректном вводе
@@ -16,32 +15,37 @@ double getValidInput(const string& prompt);
 
 /**
  * @brief Вычисляет третью сторону треугольника по теореме косинусов
- * @param a Длина первой стороны
- * @param b Длина второй стороны
- * @param angleRad Угол между сторонами в радианах
+ * @param a Длина первой стороны (const)
+ * @param b Длина второй стороны (const)
+ * @param angleRad Угол между сторонами в радианах (const)
  * @return Длина третьей стороны
  */
-double calculateThirdSide(double a, double b, double angleRad);
+double calculateThirdSide(const double a, const double b, const double angleRad);
 
 /**
  * @brief Вычисляет площадь треугольника
- * @param a Длина первой стороны
- * @param b Длина второй стороны
- * @param angleRad Угол между сторонами в радианах
+ * @param a Длина первой стороны (const)
+ * @param b Длина второй стороны (const)
+ * @param angleRad Угол между сторонами в радианах (const)
  * @return Площадь треугольника
  */
-double calculateArea(double a, double b, double angleRad);
+double calculateArea(const double a, const double b, const double angleRad);
 
 /**
  * @brief Вычисляет радиус описанной окружности
- * @param a Длина первой стороны
- * @param b Длина второй стороны
- * @param c Длина третьей стороны
- * @param area Площадь треугольника
+ * @param a Длина первой стороны (const)
+ * @param b Длина второй стороны (const)
+ * @param c Длина третьей стороны (const)
+ * @param area Площадь треугольника (const)
  * @return Радиус описанной окружности
  */
-double calculateCircumradius(double a, double b, double c, double area);
+double calculateCircumradius(const double a, const double b, const double c, const double area);
 
+/**
+ * @brief Главная функция программы
+ * @return 0 при успешном выполнении, 1 при ошибке
+ * @note Вычисляет параметры треугольника по двум сторонам и углу между ними
+ */
 int main() {
     setlocale(LC_ALL, "Russian");
 
@@ -52,12 +56,12 @@ int main() {
     double angle = getValidInput("Угол между сторонами (в градусах) = ");
 
     // Преобразование угла в радианы
-    double angleRad = angle * M_PI / 180.0;
+    const double angleRad = angle * M_PI / 180.0;
 
     // Вычисление параметров треугольника
-    double c = calculateThirdSide(a, b, angleRad);
-    double area = calculateArea(a, b, angleRad);
-    double radius = calculateCircumradius(a, b, c, area);
+    const double c = calculateThirdSide(a, b, angleRad);
+    const double area = calculateArea(a, b, angleRad);
+    const double radius = calculateCircumradius(a, b, c, area);
 
     // Вывод результатов
     cout << fixed << setprecision(4);
@@ -69,29 +73,31 @@ int main() {
     return 0;
 }
 
-// Реализация функций
-
 double getValidInput(const string& prompt) {
-    double value;
-    cout << prompt;
-    if (!(cin >> value) || value <= 0) {
-        cerr << "Ошибка: введено некорректное значение. Завершение программы.\n";
-        exit(EXIT_FAILURE);
+    double value = 0.0;
+    while (true) {
+        cout << prompt;
+        if (cin >> value && value > 0) {
+            return value;
+        }
+        cerr << "Ошибка: введите положительное число.\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-    return value;
 }
 
-double calculateThirdSide(double a, double b, double angleRad) {
-    // Теорема косинусов: c² = a² + b² - 2ab·cos(γ)
+double calculateThirdSide(const double a, const double b, const double angleRad) {
     return sqrt(pow(a, 2) + pow(b, 2) - 2 * a * b * cos(angleRad));
 }
 
-double calculateArea(double a, double b, double angleRad) {
-    // Формула площади через две стороны и угол между ними: S = (1/2)ab·sin(γ)
+double calculateArea(const double a, const double b, const double angleRad) {
     return 0.5 * a * b * sin(angleRad);
 }
 
-double calculateCircumradius(double a, double b, double c, double area) {
-    // Формула радиуса описанной окружности: R = abc/(4S)
+double calculateCircumradius(const double a, const double b, const double c, const double area) {
+    if (area <= numeric_limits<double>::epsilon()) {
+        cerr << "Ошибка: площадь треугольника слишком мала для вычисления радиуса.\n";
+        return NAN;
+    }
     return (a * b * c) / (4 * area);
 }

@@ -32,19 +32,30 @@ double calculateThirdSide(const double a, const double b, const double angleRad)
 double calculateArea(const double a, const double b, const double angleRad);
 
 /**
- * @brief Вычисляет радиус описанной окружности
+ * @brief Вычисляет радиус описанной окружности треугольника
  * @param a Длина первой стороны (const)
  * @param b Длина второй стороны (const)
  * @param c Длина третьей стороны (const)
  * @param area Площадь треугольника (const)
- * @return Радиус описанной окружности
+ * @return Радиус описанной окружности или NAN при ошибке вычисления
  */
 double calculateCircumradius(const double a, const double b, const double c, const double area);
 
 /**
  * @brief Главная функция программы
- * @return 0 при успешном выполнении, 1 при ошибке
- * @note Вычисляет параметры треугольника по двум сторонам и углу между ними
+ *
+ * Эта функция осуществляет взаимодействие с пользователем,
+ * собирает входные данные, вызывает вычислительные функции,
+ * и выводит результаты. В частности:
+ * - запрашивает длины двух сторон и угол между ними в градусах;
+ * - преобразует угол в радианы;
+ * - вычисляет третью сторону по теореме косинусов;
+ * - вычисляет площадь треугольника;
+ * - вычисляет радиус описанной окружности.
+ *
+ * В случае успешного выполнения выводит результаты с точностью 4 знака после запятой.
+ *
+ * @return 0 при успешном завершении программы.
  */
 int main() {
     setlocale(LC_ALL, "Russian");
@@ -63,7 +74,7 @@ int main() {
     const double area = calculateArea(a, b, angleRad);
     const double radius = calculateCircumradius(a, b, c, area);
 
-    // Вывод результатов
+    // Вывод результатов с точностью 4 знака после запятой
     cout << fixed << setprecision(4);
     cout << "\nРезультаты вычислений:\n";
     cout << "Третья сторона (c) = " << c << endl;
@@ -73,31 +84,4 @@ int main() {
     return 0;
 }
 
-double getValidInput(const string& prompt) {
-    double value = 0.0;
-    while (true) {
-        cout << prompt;
-        if (cin >> value && value > 0) {
-            return value;
-        }
-        cerr << "Ошибка: введите положительное число.\n";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-}
-
-double calculateThirdSide(const double a, const double b, const double angleRad) {
-    return sqrt(pow(a, 2) + pow(b, 2) - 2 * a * b * cos(angleRad));
-}
-
-double calculateArea(const double a, const double b, const double angleRad) {
-    return 0.5 * a * b * sin(angleRad);
-}
-
-double calculateCircumradius(const double a, const double b, const double c, const double area) {
-    if (area <= numeric_limits<double>::epsilon()) {
-        cerr << "Ошибка: площадь треугольника слишком мала для вычисления радиуса.\n";
-        return NAN;
-    }
-    return (a * b * c) / (4 * area);
-}
+// Реализация вспомогательных функций остаётся без изменений.

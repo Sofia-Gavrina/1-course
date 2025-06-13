@@ -72,7 +72,7 @@ double computeSumFirstN(int count) {
   double curr_value = -0.5;
   total += curr_value;
 
-  for (int i = 2; i <= count; ++i) {
+  for (int i = 1; i < count; ++i) {
     curr_value = calculateNext(curr_value, i);
     total += curr_value;
     cout << "ind=" << i << " cur=" << curr_value << endl;
@@ -94,7 +94,7 @@ double computeSumWithLimit(double epsilon) {
 }
 
 double getValue() { 
-  double value;
+  double value=0;
   cin >> value;
   if (cin.fail()) {
     cout << "Некорректное значение" << endl;

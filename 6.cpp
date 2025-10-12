@@ -127,9 +127,12 @@ int main()
   cout << "Индексы элементов, кратных 3 и 6: " << endl;
   print_indices_of_elements_multiple_of_3_and_6(arr, n);
   cout << "Массив с заменёнными нулями элементами между min и max: " << endl;
-  print_array_with_zeros_between_min_max(arr, n);
+  int *with_zeros_arr = new int[n];
+  copy(arr, arr + n, with_zeros_arr);
+  print_array_with_zeros_between_min_max(with_zeros_arr, n);
 
   delete[] arr;
+  delete[] with_zeros_arr;
 
   return 0;
 }

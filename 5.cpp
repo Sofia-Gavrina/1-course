@@ -15,7 +15,7 @@ double get_value();
  * @param sum Накопленная сумма
  * @param term Текущий член ряда
  */
-double calculate_first_n_series_sum_recursive(int k, int n, double sum, double term);
+double calculate_first_n_series_sum_recursive(int k, const int n, double sum, double term);
 
 /**
  * @brief Рекурсивно вычисляет сумму всех членов ряда, по модулю не меньших заданного числа e
@@ -24,7 +24,7 @@ double calculate_first_n_series_sum_recursive(int k, int n, double sum, double t
  * @param sum Накопленная сумма
  * @param term Текущий член ряда
  */
-double calculate_series_sum_above_epsilon_recursive(int k, double eps, double sum, double term);
+double calculate_series_sum_above_epsilon_recursive(int k, const double eps, double sum, double term);
 
 /**
  * @brief Точка входа в программу
@@ -65,7 +65,8 @@ double get_value()
   return value;
 }
 
-double calculate_first_n_series_sum_recursive(int k, int n, double sum, double term)
+double calculate_first_n_series_sum_recursive(int k, const int n, double sum, double term)
+
 {
   if (k > n)
   {
@@ -79,7 +80,8 @@ double calculate_first_n_series_sum_recursive(int k, int n, double sum, double t
   return calculate_first_n_series_sum_recursive(k + 1, n, sum, next_term);
 }
 
-double calculate_series_sum_above_epsilon_recursive(int k, double eps, double sum, double term)
+double calculate_series_sum_above_epsilon_recursive(int k, const double eps, double sum, double term)
+
 {
   if (fabs(term) < eps)
   {
